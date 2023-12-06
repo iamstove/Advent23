@@ -3,29 +3,25 @@ use std::io::{self, BufRead};
 use std::path::Path;
 
 fn main() {
-    let total = read_and_calc();
+    let mut total = 0;
+    let lines = read_lines("./input.txt");
+
+    match lines {
+        Ok(lines) => {
+            for line in lines {
+                //println!("{}", line.unwrap());
+                total += parse_string(&line.unwrap());
+            }
+        },
+        Err(e) => println!("File Error: {}", e),
+    }
+
+    
     println!("{}", total);
 }
 
 
-fn read_and_calc () -> u32 {
-    let mut ret_val = 0;
-
-    //read file, find first and last number, add to total
-    if let Ok(lines) = read_lines("./input.txt") {
-        // Consumes the iterator, returns an (Optional) String
-        for line in lines {
-            if let Ok(ip) = line {
-                //println!("{}", ip);
-                ret_val += parse_string(ip);
-            }
-        }
-    }
-
-    return ret_val;
-}
-
-fn parse_string(str: String) -> u32{
+fn parse_string(str: &String) -> u32{
     let mut ret_val;
     let mut ints_in_str: Vec<u32> = Vec::new();
 
